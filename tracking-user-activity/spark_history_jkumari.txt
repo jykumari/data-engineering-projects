@@ -1,0 +1,289 @@
+raw_assessment = spark \
+  .read \
+  .format("kafka") \
+  .option("kafka.bootstrap.servers", "kafka:29092") \
+  .option("subscribe","assessment") \
+  .option("startingOffsets", "earliest") \
+  .option("endingOffsets", "latest") \
+  .load() 
+raw_assessment.cache()
+raw_assessment.printSchema()
+assessment = raw_assessment.select(raw_assessment.value.cast('string'))
+assessment.show(4)
+assessment.write.parquet("/tmp/assessment")
+assessment.show()
+import json
+assessment.rdd.map(lambda x: json.loads(x.value)).toDF().show()
+from pyspark.sql import Row
+extracted_assessments = assessment.rdd.map(lambda x: Row(**json.loads(x.value))).toDF()
+extracted_assessments.show()
+extracted_assessments.write.parquet("/tmp/extracted_assessments")
+assessment.show()
+extracted_assessments.show()
+extracted_assessments.registerTempTable('assessment')
+spark.sql("select count(distinct(exam_name)) as C from assessment order by C ").show()
+spark.sql("select count(*) from assessments where exam_name = "Learning Git").show()
+spark.sql(select count(*) from assessments where exam_name = "Learning Git").show()
+spark.sql(select count(*) from assessment where exam_name = "Learning Git").show()
+spark.sql("select count(*) as count_of_people from assessment where exam_name = 'Learning Git'").show()
+spark.sql("select count(*) as C, exam_name from assessment group by exam_name order by C ").show()
+spark.sql("select count(*) as C, exam_name from assessment group by exam_name order by C ").show(all)
+spark.sql("select count(*) as C, exam_name from assessment group by exam_name order by C ").show(50)
+spark.sql("select count(*) as C, exam_name from assessment where c = 1 group by exam_name").show()
+spark.sql("select count(*) as C, exam_name from assessment group by exam_name order by C desc").show()
+spark.sql("select count(*) as C, exam_name from assessment where C = 1 group by exam_name order by C").show()
+spark.sql("select count(*) as C, exam_name from assessment group by exam_name order by C desc").max(exam_name)
+spark.sql("select count(*) as C, exam_name from assessment group by exam_name order by C desc").max()
+import pyspark.sql.functions as func
+spark.sql("select count(*) as C, exam_name from assessment group by exam_name order by C desc").max('C').select(func.col('max(C)').alias("max C"))
+spark.sql("select max(exam_name) from from assessment")
+spark.sql("select count(*) as C, max(C), exam_name from assessment group by exam_name order by C desc")
+spark.sql("select MAX(sequences.attempt) from assessment")
+spark.sql("select max(counts.correct) from assessment")
+spark.sql("select count(*) as C, exam_name from assessment group by exam_name order by C desc").show()
+spark.sql("select count(*) as C, exam_name from assessment group by exam_name order by C desc").head(1)
+spark.sql("select count(*) as C, exam_name from assessment group by exam_name order by C").show()
+spark.sql("select count(*) as C, exam_name from assessment group by exam_name order by C").head()
+spark.sql("select count(*) as C, exam_name from assessment group by exam_name order by C").head(4)
+spark.sql("select count(*) as C, exam_name from assessment where C=1 group by exam_name order by C").show()
+spark.sql("select count(*) as C, exam_name from assessment where (select count(*) from assessment = 1) group by exam_name order by C").show()
+spark.sql("select count(*) as C, exam_name from assessment group by exam_name order by C").head(5)
+spark.sql("select count(*) as C, exam_name from assessment group by exam_name order by C").head(4)
+spark.sql("select count(*) as number from assessment where certification = 'True'")
+spark.sql("select count(*) as number from assessment where certification = 'false'")
+spark.sql("select count(*) from assessment where certification = 'false'")
+spark.sql("select count(*) from assessment where certification = 'false'").show()
+spark.sql("select count(*) as certification_courses from assessment where certification = 'true'").show()
+spark.sql("select count(*) as certification_courses from assessment where certification = 'false'").show()
+spark.sql("select exam_name from assessment where certification = 'false'").show()
+spark.sql("select exam_name from assessment where certification != 'false'").show()
+spark.sql("select exam_name from assessment where certification = '').show()
+spark.sql("select exam_name from assessment where max_attempts = "1.0").show()
+spark.sql("select exam_name from assessment where max_attempts = '1.0'").show()
+spark.sql("select count(exam_name) as E from assessment where max_attempts = '1.0'").show()
+spark.sql("select sequences.attempt from assessment").show()
+spark.sql("select distinct(sequences.attempt) from assessment").show()
+spark.sql("select exam_name from assessment where sequences.attempt = 1 ").show()
+spark.sql("select sequences.count.unanswered from assessment").show()
+spark.sql("select exam_name from assessment where sequences.id = '5b28a462-7a3b-42e0-b508-09f3906d1703'").show()
+spark.sql("select exam_name from assessment").show()
+spark.sql("select sequences.id from assessment").show()
+spark.sql("select sequences.idx from assessment").show()
+extracted_assessments.printSchema()
+spark.sql("select sequences from assessment").show()
+spark.sql("select sequences.questions from assessment").show()
+spark.sql("select sequences.questions.0 from assessment").show()
+spark.sql("select sequences.questions.attempt from assessment").show()
+spark.sql("select sequences.attempt from assessment").show()
+spark.sql("select sequences.questions from assessment").show()
+spark.sql("select sequences.counts from assessment").show()
+from pyspark.sql.functions import map_keys
+spark-submit --version
+sc.version
+import org.apache.spark.sql.functions.map_keys
+extracted_assessments.printSchema()
+import json
+import pandas as pd
+from pyspark.sql.functions import explode, split
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType, TimestampType
+import warnings
+assessment.show()
+extracted_assessments.show()
+final_schema = StructType([StructField('certification', StringType(), True),
+                     StructField('exam_name', StringType(), True),
+                     StructField('sequences', StructType([
+                         StructField('attempt', StringType(), True),
+                         StructField('counts', StructType([
+                             StructField('incorrect', StringType(), True),
+                             StructField('all_correct', StringType(), True),
+                             StructField('correct', StringType(), True)
+                             StructField('total', StringType(), True)
+                         ]))]))])
+final_schema = StructType([StructField('certification', StringType(), True),
+                     StructField('exam_name', StringType(), True),
+                     StructField('sequences', StructType([
+                         StructField('attempt', StringType(), True),
+                         StructField('counts', StructType([
+                             StructField('incorrect', StringType(), True),
+                             StructField('all_correct', StringType(), True),
+                             StructField('correct', StringType(), True)
+                             StructField('total', StringType(), True)
+                         ])])])
+final_schema = StructType([StructField('certification', StringType(), True),
+                     StructField('exam_name', StringType(), True),
+                     StructField('sequences', StructType([
+                         StructField('attempt', StringType(), True),
+                         StructField('counts', StructType([
+                             StructField('incorrect', StringType(), True),
+                             StructField('all_correct', StringType(), True),
+                             StructField('correct', StringType(), True),
+                             StructField('total', StringType(), True)
+                         ])])])
+final_schema = StructType([StructField('certification', StringType(), True),
+                     StructField('exam_name', StringType(), True),
+                     StructField('sequences', StructType([
+                         StructField('attempt', StringType(), True),
+                         StructField('counts', StructType([
+                             StructField('incorrect', StringType(), True),
+                             StructField('all_correct', StringType(), True),
+                             StructField('correct', StringType(), True),
+                             StructField('total', StringType(), True)
+                         ]))]))])
+focused_extracted_assessments = assessment.rdd.map(lambda x: json.loads(x.value)).toDF(schema=final_schema)
+focused_extracted_assessments.show(5)
+focused_extracted_assessments.registerTempTable('focused_assessments')
+focused_extracted_assessments.printSchema()
+spark.sql("select exam_name, sequences.attempt, sequences.counts.correct from focused_assessments").show()
+spark.sql("select count(distinct(exam_name)) as C from focused_assessments order by C ").show()
+spark.sql("select count(*) as count_of_people from focused_assessments where exam_name = 'Learning Git'").show()
+spark.sql("select count(*) as C, exam_name from focused_assessments group by exam_name order by C").head(4)
+spark.sql("select count(*) as C, exam_name from focused_assessments group by exam_name order by C desc").head(1)
+spark.sql("select exam_name, sequences.attempt from focused_assessments where sequences.attempt > 1").show()
+spark.sql("select exam_name, sequences.attempt from focused_assessments where sequences.attempt != 1").show()
+spark.sql("select exam_name, sequences.attempt from focused_assessments where sequences.attempt = 1").show()
+spark.sql("select count(*) as C, exam_name, sequences.attempt from focused_assessments where sequences.attempt = 1 group by exam_name, sequences.attempt").show()
+spark.sql("select count(*) as C, sequences.attempt from focused_assessments where sequences.attempt = 1 group by sequences.attempt").show()
+spark.sql("select count(*) as C, exam_name, sequences.counts.total from focused_assessments group by exam_name, sequences.counts.total").show()
+spark.sql("select count(*) as C, exam_name, sequences.counts.total from focused_assessments group by exam_name, sequences.counts.total order by sequences.counts.total desc").show()
+spark.sql("select max(sequences.counts.total), exam_name from focused_assessments group by exam_name").show()
+spark.sql("select max(sequences.counts.total) as total, exam_name from focused_assessments group by exam_name order by sequences.counts.total desc").show()
+spark.sql("select max(sequences.counts.total) as total, exam_name from focused_assessments group by exam_name order by exam_name desc").show()
+spark.sql("select max(sequences.counts.total) as total, exam_name from focused_assessments group by exam_name order by total desc").show()
+spark.sql("select max(sequences.counts.total) as total, exam_name from focused_assessments group by exam_name order by total desc").show(5)
+spark.sql("select sum(sequences.counts.all_correct) as correct from focused_assessments where exam_name = 'Learning Git' and sequences.counts.all_correct = 'true'").show()
+spark.sql("select sequences.counts.all_correct from focused_assessments where exam_name = 'Learning Git' and sequences.counts.all_correct = 'true'").show()
+spark.sql("select sequences.counts.all_correct from focused_assessments where exam_name = 'Learning Git' and sequences.counts.all_correct = 'true'").sum()
+spark.sql("select sequences.counts.all_correct from focused_assessments where exam_name = 'Learning Git' and sequences.counts.all_correct = 'true'").agg('sum')
+spark.sql("select count(sequences.counts.all_correct) from focused_assessments where exam_name = 'Learning Git' and sequences.counts.all_correct = 'true'").show()
+spark.sql("select count(sequences.counts.all_correct) from focused_assessments where exam_name = 'Learning Git'").show()
+spark.sql("select count(sequences.counts.all_correct), sequences.counts.all_correct from focused_assessments where exam_name = 'Learning Git' group by sequences.counts.all_correct").show()
+spark.sql("select count(sequences.counts.all_correct) as count, sequences.counts.all_correct from focused_assessments where exam_name = 'Learning Git' group by sequences.counts.all_correct").show()
+spark.sql("select count(sequences.counts.all_correct) as count, sequences.counts.all_correct, exam_name from focused_assessments where exam_name = 'Learning Git' group by sequences.counts.all_correct, exam_name").show()
+spark.sql("select count(sequences.counts.all_correct) as count, sequences.counts.all_correct, exam_name from focused_assessments group by sequences.counts.all_correct, exam_name").show()
+spark.sql("select count(sequences.counts.all_correct) as count, sequences.counts.all_correct, exam_name from focused_assessments group by sequences.counts.all_correct, exam_name order by count").show()
+spark.sql("SELECT exam_name, \
+           (sequences.counts.correct/sequences.counts.total) AS ratio \
+           FROM focused_assessments\
+           HAVING ratio = 1").show()
+spark.sql("SELECT exam_name, \
+           (sequences.counts.correct/sequences.counts.total) AS ratio \
+           FROM focused_assessments\
+          ").show()
+spark.sql("SELECT exam_name, \
+           (sequences.counts.correct/sequences.counts.total) AS ratio \
+           FROM focused_assessments\ group by exam_name
+          ").show()
+spark.sql("SELECT distinct(exam_name), \
+           (sequences.counts.correct/sequences.counts.total) AS ratio \
+           FROM focused_assessments\ 
+          ").show()
+spark.sql("SELECT exam_name, \
+           (sequences.counts.correct/sequences.counts.total) AS ratio \
+           FROM focused_assessments\
+           HAVING ratio = 1").show()
+spark.sql("SELECT count(exam_name), \
+           (sequences.counts.correct/sequences.counts.total) AS ratio \
+           FROM focused_assessments\
+           HAVING ratio = 1").show()
+spark.sql("SELECT exam_name, \
+           (sequences.counts.correct/sequences.counts.total) AS ratio \
+           FROM focused_assessments\
+           HAVING ratio = 1 group by exam_name").show()
+spark.sql("SELECT count(*) as C, exam_name, \
+           (sequences.counts.correct/sequences.counts.total) AS ratio \
+           FROM focused_assessments\
+           HAVING ratio = 1 group by exam_name").show()
+spark.sql("select count(sequences.counts.all_correct) as count, sequences.counts.all_correct, exam_name from focused_assessments group by sequences.counts.all_correct, exam_name order by count").show()
+spark.sql("select count(sequences.counts.all_correct) as count, sequences.counts.all_correct, exam_name from focused_assessments sequences.counts.all_correct = 'true' where group by sequences.counts.all_correct, exam_name order by count").show()
+spark.sql("select count(sequences.counts.all_correct) as count, sequences.counts.all_correct, exam_name from focused_assessments where sequences.counts.all_correct = 'true' group by sequences.counts.all_correct, exam_name order by count").show()
+spark.sql("select count(sequences.counts.all_correct) as count, sequences.counts.all_correct, exam_name from focused_assessments where sequences.counts.all_correct = 'true' and exam_name = 'Learning Git' group by sequences.counts.all_correct, exam_name order by count").show()
+spark.sql("select count(sequences.counts.all_correct) as count, sequences.counts.all_correct, exam_name from focused_assessments where sequences.counts.all_correct = 'true' group by sequences.counts.all_correct, exam_name order by count desc").show()
+ 
+spark.sql("select count((sequences.counts.all_correct)/count(sequences.counts.total)) as count, exam_name from focused_assessments group by exam_name order by count desc").show()
+spark.sql("select count((sequences.counts.all_correct)/count(sequences.counts.total)) as count from focused_assessments").show()
+spark.sql("select count(sequences.counts.all_correct) as count, sequences.counts.all_correct, exam_name from focused_assessments where sequences.counts.all_correct = 'true' group by sequences.counts.all_correct, exam_name order by count desc").show()
+spark.sql("select count(sequences.counts.all_correct) as C, count(sequences.counts.total) as D, exam_name from focused_assessments group by exam_name order by count desc").show()
+spark.sql("select count(sequences.counts.all_correct) as C, count(sequences.counts.total) as D, exam_name from focused_assessments group by exam_name").show()
+spark.sql("select count(sequences.counts.all_correct) as C, count(sequences.counts.total) as D, exam_name from focused_assessments where exam_name = 'Learning Git' group by exam_name").show()
+spark.sql("select count((sequences.counts.all_correct) where sequences.counts.all_correct = 'true') as C, count(sequences.counts.total) as D, exam_name from focused_assessments where exam_name = 'Learning Git' group by exam_name").show()
+spark.sql("select count(sequences.counts.all_correct) as C, count(sequences.counts.total) as D, exam_name from focused_assessments and sequences.counts.all_correct = 'true' where exam_name = 'Learning Git' group by exam_name").show()
+spark.sql("select count(sequences.counts.all_correct) as C, count(sequences.counts.total) as D, exam_name from focused_assessments where exam_name = 'Learning Git' and sequences.counts.all_correct = 'true' group by exam_name").show()
+spark.sql("select count(sequences.counts.all_correct) as count,  sequences.counts.all_correct, exam_name from focused_assessments where exam_name = 'Learning Git' group by sequences.counts.all_correct, exam_name").show()
+spark.sql("select count(sequences.counts.all_correct) as count,  sequences.counts.all_correct, exam_name from focused_assessments group by sequences.counts.all_correct, exam_name").show()
+spark.sql("select count(sequences.counts.all_correct) as count, count(sequences.counts.correct/sequences.counts.total), sequences.counts.all_correct, exam_name from focused_assessments group by sequences.counts.all_correct, exam_name").show()
+spark.sql("select count(sequences.counts.all_correct) as count, count(sequences.counts.correct/sequences.counts.total), exam_name from focused_assessments group by sequences.counts.all_correct, exam_name").show()
+spark.sql("select count(sequences.counts.all_correct) as count, count(sequences.counts.correct/sequences.counts.total) as grade, exam_name from focused_assessments group by sequences.counts.all_correct, exam_name").show()
+spark.sql("select count(sequences.counts.all_correct) as count, count(sequences.counts.correct/sequences.counts.total) as grade, sequences.counts.all_correct, exam_name from focused_assessments group by sequences.counts.all_correct, exam_name").show()
+spark.sql("select count(sequences.counts.all_correct) as count, count(sequences.counts.correct/sequences.counts.total) as grade, sequences.counts.all_correct, exam_name from focused_assessments group by sequences.counts.all_correct, exam_name order by count desc").show()
+spark.sql("select count(sequences.counts.all_correct) as count, count(sequences.counts.correct/sequences.counts.total) as grade, sequences.counts.all_correct, exam_name from focused_assessments where exam_name = 'Learning Git" group by sequences.counts.all_correct, exam_name order by count desc").show()
+spark.sql("select count(sequences.counts.all_correct) as count, count(sequences.counts.correct/sequences.counts.total) as grade, sequences.counts.all_correct, exam_name from focused_assessments where exam_name = 'Learning Git' group by sequences.counts.all_correct, exam_name order by count desc").show()
+spark.sql("select count(sequences.counts.all_correct) as count, (sequences.counts.correct/sequences.counts.total) as grade, sequences.counts.all_correct, exam_name from focused_assessments where exam_name = 'Learning Git' group by sequences.counts.all_correct, exam_name order by count desc").show()
+spark.sql("select ((sequences.counts.correct)/(sequences.counts.total)) as grade, exam_name from focused_assessments where exam_name = 'Learning Git' group by exam_name order by grade desc").show()
+spark.sql("select (sequences.counts.correct/sequences.counts.total) as grade, exam_name from focused_assessments where exam_name = 'Learning Git' group by exam_name order by grade desc").show()
+spark.sql("select (sequences.counts.correct/sequences.counts.total) as grade, exam_name from focused_assessments where exam_name = 'Learning Git' group by exam_name").show()
+spark.sql("select avg(sequences.counts.correct/sequences.counts.total) as grade, exam_name from focused_assessments where exam_name = 'Learning Git' group by exam_name").show()
+spark.sql("select avg(sequences.counts.correct/sequences.counts.total) as grade, exam_name from focused_assessments group by exam_name").show()
+spark.sql("select avg(sequences.counts.correct/sequences.counts.total) as grade, exam_name from focused_assessments group by exam_name order by grade").show()
+spark.sql("select avg(sequences.counts.correct/sequences.counts.total) as grade, exam_name from focused_assessments group by exam_name order by grade desc").show()
+spark.sql("select avg(sequences.counts.correct/sequences.counts.total) as grade, exam_name from focused_assessments group by exam_name order by grade desc").show(5)
+spark.sql("select count(sequences.counts.all_correct) as count, (sequences.counts.correct/sequences.counts.total) as grade, sequences.counts.all_correct, exam_name from focused_assessments where exam_name = 'Learning Git' group by sequences.counts.all_correct, exam_name order by count desc").show()
+spark.sql("SELECT exam_name, \
+           (sequences.counts.correct/sequences.counts.total) AS ratio \
+           FROM table\
+           HAVING ratio = 1").show()
+spark.sql("SELECT exam_name, \
+           (sequences.counts.correct/sequences.counts.total) AS ratio \
+           FROM focused_assessments\
+           HAVING ratio = 1").show()
+spark.sql("select count(sequences.counts.all_correct) as count, sequences.counts.all_correct, exam_name from focused_assessments where sequences.counts.all_correct = 'true' group by sequences.counts.all_correct, exam_name order by count desc").show()
+spark.sql("select count(sequences.counts.all_correct) as count, sequences.counts.all_correct, exam_name from focused_assessments where sequences.counts.all_correct = 'true' and exam_name = 'Learning Git' group by sequences.counts.all_correct, exam_name order by count desc").show()
+spark.sql("select count(sequences.counts.all_correct) as count, sequences.counts.all_correct, exam_name from focused_assessments where exam_name = 'Learning Git' group by sequences.counts.all_correct, exam_name order by count desc").show()
+spark.sql("select count(*) as C, exam_name from focused_assessments group by exam_name order by C desc").max()
+spark.sql("select count(sequences.counts.all_correct) as count, sequences.counts.all_correct, exam_name from focused_assessments where sequences.counts.all_correct = 'true' group by sequences.counts.all_correct, exam_name order by count desc").show()
+extracted_assessments.printSchema()
+focused_extracted_assessments.printSchema()
+spark.sql("select exam_name, sequences.attempt, sequences.counts.correct from focused_assessments").show()
+spark.sql("select exam_name, sequences.attempt, sequences.counts.correct from focused_assessments").show(4)
+spark.sql("select max(sequences.counts.total) as total, exam_name from focused_assessments group by exam_name order by total desc").show(5)
+spark.sql("select count(sequences.counts.all_correct) as count, sequences.counts.all_correct, exam_name from focused_assessments where exam_name = 'Learning Git' group by sequences.counts.all_correct, exam_name order by count desc").show()
+spark.sql("select count(sequences.counts.all_correct) as count, sequences.counts.all_correct, exam_name from focused_assessments where exam_name = 'Learning Git' group by sequences.counts.all_correct, exam_name").show()
+assessment.show(4)
+extracted_assessments.show(4)
+Most_popular_course = spark.sql("select count(*) as count_of_people from focused_assessments where exam_name = 'Learning Git'")
+number_of_assessments = spark.sql("select count(distinct(exam_name)) as C from focused_assessments order by C")
+number_of_assessments.show()
+Most_popular_course = spark.sql("select count(*) as count_of_people from focused_assessments where exam_name = 'Learning Git'")
+Most_popular_course.show()
+least_commom_course = spark.sql("select count(*) as C, exam_name from focused_assessments group by exam_name order by C")
+least_common_course.head(4)
+least_common_course = spark.sql("select count(*) as C, exam_name from focused_assessments group by exam_name order by C")
+least_common_course.head(4)
+most_common_course = spark.sql("select count(*) as C, exam_name from focused_assessments group by exam_name order by C desc")
+most_common_course.head(1)
+assessment_attempt = spark.sql("select count(*) as C, sequences.attempt from focused_assessments where sequences.attempt = 1 group by sequences.attempt")
+assessment_attempt.show()
+assessment_attempt = spark.sql("select count(*) as C, sequences.attempt from focused_assessments group by sequences.attempt")
+assessment_attempt.show()
+assessment_attempt = spark.sql("select count(*) as Count_of_courses, sequences.attempt from focused_assessments group by sequences.attempt")
+assessment_attempt.show()
+max_number_of_courses = spark.sql("select max(sequences.counts.total) as total, exam_name from focused_assessments group by exam_name order by total desc")
+max_number_of_courses.show(5)
+Average_Grades = spark.sql("select avg(sequences.counts.correct/sequences.counts.total) as grade, exam_name from focused_assessments group by exam_name order by grade desc")
+Average_Grades.show(5)
+counts_all_correct = spark.sql("select count(sequences.counts.all_correct) as count, sequences.counts.all_correct, exam_name from focused_assessments where exam_name = 'Learning Git' group by sequences.counts.all_correct, exam_name")
+counts_all_correct.show()
+number_of_assessments.write.parquet("/tmp/number_of_assessments")
+Most_popular_course.write.parquet("/tmp/Most_popular_course")
+least_common_course.write.parquet("/tmp/least_common_course")
+most_common_course.write.parquet("/tmp/most_common_course")
+assessment_attempt.write.parquet("/tmp/assessment_attempt")
+max_number_of_questions.write.parquet("/tmp/max_number_of_questions")
+Average_Grades.write.parquet("/tmp/Average_Grades")
+counts_all_correct.write.parquet("/tmp/counts_all_correct")
+max_number_of_questions = spark.sql("select max(sequences.counts.total) as total, exam_name from focused_assessments group by exam_name order by total desc")
+max_number_of_questions.show(5)
+max_number_of_questions.write.parquet("/tmp/max_number_of_questions")
+ls  /root/.python_history
+ls  /root
+cat /root
+exit()

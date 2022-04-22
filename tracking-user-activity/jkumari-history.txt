@@ -1,0 +1,531 @@
+    1  bq query --use_legacy_sql=false '
+    2      SELECT count(*)
+    3      FROM
+    4         `bigquery-public-data.san_francisco.bikeshare_trips`'
+    5  ls
+    6  cd w205
+    7  ls
+    8  cd project-1-jkumariucb/
+    9  ls
+   10  bq query --use_legacy_sql=false '
+   11      SELECT count(*)
+   12      FROM
+   13         `bigquery-public-data.san_francisco.bikeshare_trips`'
+   14  bq query --use_legacy_sql=false '
+   15     SELECT count(distinct (trip_id)) as dataset_size FROM `bigquery-public-data.san_francisco.bikeshare_trips` 
+   16  bq query --use_legacy_sql=false '
+   17  bq query --use_legacy_sql=false '
+   18      SELECT count(distinct(trip_id)) as dataset_size
+   19      FROM
+   20         `bigquery-public-data.san_francisco.bikeshare_trips`'
+   21  bq query --use_legacy_sql=false '
+   22      SELECT min(start_date) FROM `bigquery-public-data.san_francisco.bikeshare_trips`
+   23  bq query --use_legacy_sql=false '
+   24      SELECT min(start_date) 
+   25      FROM `bigquery-public-data.san_francisco.bikeshare_trips`'
+   26  bq query --use_legacy_sql=false '
+   27      SELECT min(start_date) as earliest_start_time
+   28      FROM `bigquery-public-data.san_francisco.bikeshare_trips`'
+   29  bq query --use_legacy_sql=false '
+   30      SELECT min(start_date) as earliest_start_date_time
+   31      FROM `bigquery-public-data.san_francisco.bikeshare_trips`'
+   32  bq query --use_legacy_sql=false '
+   33      SELECT max(end_date) as latest_end_date_time 
+   34      FROM `bigquery-public-data.san_francisco.bikeshare_trips`'
+   35  bq query --use_legacy_sql=false '
+   36      SELECT  count(bikes_available) 
+   37      FROM `bigquery-public-data.san_francisco.bikeshare_status`' 
+   38  bq query --use_legacy_sql=false '
+   39      SELECT  count(bikes_available) as number_of_bikes
+   40      FROM `bigquery-public-data.san_francisco.bikeshare_status`' 
+   41  bq query --use_legacy_sql=false '
+   42      SELECT  count(bike_number) as number_of_bikes
+   43      FROM `bigquery-public-data.san_francisco.bikeshare_status`'
+   44  bq query --use_legacy_sql=false '
+   45      SELECT  count(bike_number) as number_of_bikes FROM `bigquery-public-data.san_francisco.bikeshare_trips`' 
+   46  cd w205
+   47  cd redis-cluster/
+   48  ls
+   49  bq query --use_legacy_sql=false '
+   50  select 
+   51  count(trip_id) as number_of_morning_trips
+   52  FROM `bigquery-public-data.san_francisco.bikeshare_trips` 
+   53  where  EXTRACT(time
+   54    FROM start_date) >= '06:00:00' and EXTRACT(time
+   55    FROM end_date) < '12:00:00'
+   56  bq query --use_legacy_sql=false '
+   57      SELECT count(*)
+   58      FROM
+   59         `bigquery-public-data.san_francisco.bikeshare_trips`'
+   60  bq query --use_legacy_sql=false '
+   61      select 
+   62      count(trip_id) as number_of_morning_trips
+   63      FROM `bigquery-public-data.san_francisco.bikeshare_trips` 
+   64      where  EXTRACT(time
+   65        FROM start_date) >= '06:00:00' and EXTRACT(time
+   66        FROM end_date) < '12:00:00'
+   67  bq query --use_legacy_sql=false '
+   68      select 
+   69      count(trip_id) as number_of_morning_trips
+   70      FROM `bigquery-public-data.san_francisco.bikeshare_trips` 
+   71      where  EXTRACT(time
+   72        FROM start_date) >= '06:00:00' and EXTRACT(time
+   73        FROM end_date) < '12:00:00''
+   74  bq query --use_legacy_sql=false '
+   75      SELECT count(trip_id) as number_of_morning_trips
+   76      FROM
+   77         `bigquery-public-data.san_francisco.bikeshare_trips`
+   78         where  EXTRACT(time
+   79        FROM start_date) >= '06:00:00' and EXTRACT(time
+   80        FROM end_date) < '12:00:00'
+   81         '
+   82  bq query --use_legacy_sql=false '
+   83      select count(trip_id) as number_of_morning_trips FROM `bigquery-public-data.san_francisco.bikeshare_trips` 
+   84  where  EXTRACT(time FROM start_date) >= '06:00:00' and EXTRACT(time FROM end_date) < '12:00:00''
+   85  bq query --use_legacy_sql=false '
+   86  select 
+   87  count(trip_id) as number_of_evening_trips
+   88  FROM `bigquery-public-data.san_francisco.bikeshare_trips` 
+   89  where  EXTRACT(time
+   90    FROM start_date) >= '12:00:00' and EXTRACT(time
+   91    FROM end_date) < '18:00:00'
+   92  bq query --use_legacy_sql=false '
+   93      select 
+   94  count(trip_id) as number_of_evening_trips
+   95  FROM `bigquery-public-data.san_francisco.bikeshare_trips` 
+   96  where  EXTRACT(time
+   97    FROM start_date) >= '12:00:00' and EXTRACT(time
+   98    FROM end_date) < '18:00:00''
+   99  bq query --use_legacy_sql=false '
+  100      SELECT count(trip_id) as number_of_morning_trips
+  101  FROM `bigquery-public-data.san_francisco.bikeshare_trips` where  EXTRACT(time FROM start_date) >= '06:00:00' and EXTRACT(time FROM end_date) < '12:00:00''
+  102  bq query --use_legacy_sql=false '
+  103      SELECT count(trip_id) as number_of_morning_trips
+  104  FROM `bigquery-public-data.san_francisco.bikeshare_trips` where  EXTRACT(time FROM start_date) >= '06:00:00' and EXTRACT(time FROM end_date) < '12:00:00'
+  105  bq query --use_legacy_sql=false '
+  106      SELECT count(trip_id) as number_of_morning_trips
+  107  FROM `bigquery-public-data.san_francisco.bikeshare_trips` where  EXTRACT(time FROM start_date) >= '06:00:00' and EXTRACT(time FROM end_date) < '12:00:00''
+  108  bq query --use_legacy_sql=false '
+  109      SELECT count(trip_id) as number_of_morning_trips FROM `bigquery-public-data.san_francisco.bikeshare_trips` where  (EXTRACT(time FROM start_date) >= '06:00:00' and EXTRACT(time FROM end_date) < '12:00:00')'
+  110  bq query --use_legacy_sql=false '
+  111      SELECT min(start_date) as earliest_start_date_time, max(end_date) as latest_end_date_time 
+  112      FROM `bigquery-public-data.san_francisco.bikeshare_trips`'
+  113  bq query --use_legacy_sql=false '
+  114      SELECT  count(distinct(bike_number)) as number_of_bikes FROM `bigquery-public-data.san_francisco.bikeshare_trips`' 
+  115  bq query --use_legacy_sql=false '
+  116  SELECT
+  117    EXTRACT(Month
+  118    FROM
+  119      start_date) AS Month,
+  120    COUNT(trip_id) AS monthly_trips from `bigquery-public-data.san_francisco.bikeshare_trips`
+  121    group by Month
+  122    order by monthly_trips desc' 
+  123  bq query --use_legacy_sql=false '
+  124  SELECT
+  125    EXTRACT(hour
+  126    FROM
+  127      end_date) AS time, count(trip_id) as trips
+  128    from `bigquery-public-data.san_francisco.bikeshare_trips`
+  129    where  EXTRACT(date
+  130    FROM
+  131      start_date) = EXTRACT(date
+  132    FROM
+  133      end_date)
+  134  group by time
+  135  order by trips desc' 
+  136  bq query --use_legacy_sql=false '
+  137  SELECT
+  138    EXTRACT(hour
+  139    FROM
+  140      end_date) AS time, count(trip_id) as trips
+  141    from `bigquery-public-data.san_francisco.bikeshare_trips`
+  142    where  EXTRACT(date
+  143    FROM
+  144      start_date) = EXTRACT(date
+  145    FROM
+  146      end_date)
+  147  group by time
+  148  order by trips desc'
+  149  bq query --use_legacy_sql=false '
+  150  SELECT
+  151    EXTRACT(hour
+  152    FROM
+  153      end_date) AS hour, count(trip_id) as trips
+  154    from `bigquery-public-data.san_francisco.bikeshare_trips`
+  155  group by hour
+  156  order by trips desc'
+  157  bq query --use_legacy_sql=false ' 
+  158  SELECT
+  159    EXTRACT(year
+  160    FROM
+  161      start_date) AS year, EXTRACT(month
+  162    FROM
+  163      start_date) AS month, count(trip_id) as trip
+  164    from `bigquery-public-data.san_francisco.bikeshare_trips`
+  165    where start_station_name = "Harry Bridges Plaza (Ferry Building)" and end_station_name = "Embarcadero at Sansome"
+  166  group by year, month
+  167  order by month desc'
+  168  bq query --use_legacy_sql=false '
+  169  SELECT
+  170    count(trip_id) as number_of_rides, 
+  171    round((duration_sec/60), 1) AS total_duration_min
+  172  FROM
+  173    `bigquery-public-data.san_francisco_bikeshare.bikeshare_trips` 
+  174  GROUP BY
+  175    duration_sec
+  176  ORDER BY number_of_rides desc' 
+  177  bq query --use_legacy_sql=false '
+  178  SELECT
+  179    count(trip_id) as number_of_rides, 
+  180    round((duration_sec/60), 1) AS total_duration_min
+  181  FROM
+  182    `bigquery-public-data.san_francisco_bikeshare.bikeshare_trips` 
+  183  GROUP BY
+  184    duration_sec
+  185  ORDER BY number_of_rides desc
+  186  limit 5' 
+  187  bq query --use_legacy_sql=false '
+  188  SELECT
+  189    subscriber_type,
+  190    ROUND(avg(duration_sec/60), 1) AS total_duration_min
+  191  FROM
+  192    `bigquery-public-data.san_francisco_bikeshare.bikeshare_trips`
+  193  GROUP BY
+  194    subscriber_type
+  195  ORDER BY
+  196    total_duration_min DESC
+  197  LIMIT
+  198    10'
+  199  bq query --use_legacy_sql=false '
+  200  SELECT
+  201    EXTRACT(hour
+  202    FROM
+  203      end_date) AS hour, count(trip_id) as trips
+  204    from `bigquery-public-data.san_francisco.bikeshare_trips`
+  205  group by hour
+  206  order by trips desc'
+  207  bq query --use_legacy_sql=false '
+  208  SELECT
+  209    EXTRACT(Month
+  210    FROM
+  211      start_date) AS Month,
+  212    COUNT(trip_id) AS monthly_trips from `bigquery-public-data.san_francisco.bikeshare_trips`
+  213    group by Month
+  214    order by monthly_trips desc' 
+  215  bq query --use_legacy_sql=false '
+  216      SELECT min(start_date) as earliest_start_date_time, max(end_date) as latest_end_date_time 
+  217      FROM `bigquery-public-data.san_francisco.bikeshare_trips`'
+  218  bq query --use_legacy_sql=false '
+  219      SELECT count(*) as dataset_size
+  220      FROM
+  221         `bigquery-public-data.san_francisco.bikeshare_trips`'
+  222  bq query --use_legacy_sql=false '
+  223      SELECT  count(distinct(bike_number)) as number_of_bikes FROM `bigquery-public-data.san_francisco.bikeshare_trips`' 
+  224  bq query --use_legacy_sql=false '
+  225      SELECT count(trip_id) as number_of_morning_trips FROM `bigquery-public-data.san_francisco.bikeshare_trips` where  EXTRACT(time FROM start_date) >= '06:00:00' and EXTRACT(time FROM end_date) < '12:00:00''
+  226  bq query --use_legacy_sql=false '
+  227      select count(trip_id) as number_of_evening_trips 
+  228      FROM `bigquery-public-data.san_francisco.bikeshare_trips` 
+  229      where  EXTRACT(time FROM start_date) >= '12:00:00' and EXTRACT(time FROM end_date) < '18:00:00''
+  230  bq query --use_legacy_sql=false '
+  231      SELECT  count(distinct(bike_number)) as number_of_bikes 
+  232      FROM `bigquery-public-data.san_francisco.bikeshare_trips`' 
+  233  bq query --use_legacy_sql=false '
+  234      select count(trip_id) as number_of_evening_trips 
+  235      FROM `bigquery-public-data.san_francisco.bikeshare_trips` 
+  236      where  EXTRACT(time FROM start_date) >= "12:00:00" and EXTRACT(time FROM end_date) < "18:00:00"'
+  237  bq query --use_legacy_sql=false '
+  238      SELECT count(trip_id) as number_of_morning_trips 
+  239      FROM `bigquery-public-data.san_francisco.bikeshare_trips` where  EXTRACT(time FROM start_date) >= "06:00:00" and EXTRACT(time FROM end_date) < "12:00:00"'
+  240  bq query --use_legacy_sql=false '
+  241      select count(trip_id) as number_of_afternoon_trips 
+  242      FROM `bigquery-public-data.san_francisco.bikeshare_trips` 
+  243      where  EXTRACT(time FROM start_date) >= "12:00:00" and EXTRACT(time FROM end_date) < "18:00:00"'
+  244  bq query --use_legacy_sql=false '
+  245  SELECT
+  246    EXTRACT(Month
+  247    FROM
+  248      start_date) AS Month,
+  249    COUNT(trip_id) AS monthly_trips from `bigquery-public-data.san_francisco.bikeshare_trips`
+  250    group by Month
+  251    order by monthly_trips desc'
+  252  bq query --use_legacy_sql=false '
+  253  SELECT
+  254    subscriber_type,
+  255    ROUND(avg(duration_sec/60), 1) AS total_duration_min
+  256  FROM
+  257    `bigquery-public-data.san_francisco_bikeshare.bikeshare_trips`
+  258  GROUP BY
+  259    subscriber_type
+  260  ORDER BY
+  261    total_duration_min DESC'
+  262  bq query --use_legacy_sql=false '
+  263  SELECT
+  264    count(trip_id) as number_of_rides, 
+  265    round((duration_sec/60), 1) AS total_duration_min
+  266  FROM
+  267    `bigquery-public-data.san_francisco_bikeshare.bikeshare_trips` 
+  268  GROUP BY
+  269    duration_sec
+  270  ORDER BY number_of_rides desc
+  271  limit 5' 
+  272  ls
+  273  cd w205
+  274  ls
+  275  cd project-1-jkumariucb
+  276  ls
+  277  ls.
+  278  ls .
+  279  git status
+  280  ls
+  281  git branch
+  282  git status
+  283  git branch assignment
+  284  git checkout assignment
+  285  ls
+  286  git branch
+  287  cp -a ../Proj1_temp/* .
+  288  ls
+  289  git status
+  290  git add .
+  291  git status
+  292  git rm .ipynb_checkpoints/Part_2-checkpoint.md
+  293  git rm -f .ipynb_checkpoints/Part_2-checkpoint.md
+  294  git rm -f .ipynb_checkpoints/Project_1-checkpoint.ipynb
+  295  git rm -f .ipynb_checkpoints/README-checkpoint.md
+  296  git rm -f .ipynb_checkpoints/README_jk-checkpoint.md
+  297  git status
+  298  git commit -m "Project-1-submission-jkumari"
+  299  cd ..
+  300  cd Project_1
+  301  git clone https://github.com/mids-w205-de-sola/project-1-jkumariucb.git
+  302  ls
+  303  cd project-1-jkumariucb/
+  304  ls
+  305  git branch assignment
+  306  git checkout assignment
+  307  ls
+  308  git status
+  309  rm -rf .ipynb_checkpoints/
+  310  git status
+  311  git branch
+  312  git add .
+  313  git commit -m "project1-jkumari"
+  314  git config --global user.name "jkumariucb"
+  315  git config --global user.email "jyotik@ischool.berkeley.edu"
+  316  –
+  317  git commit -m "project1-jkumari"
+  318  git push origin assignment
+  319  docker
+  320  docker run hello-world
+  321  clear
+  322  docker images -a
+  323  docker run midsw205/base
+  324  docker run midsw205/base pwd
+  325  docker run -it --rm -v ~/w205:/w205 midsw205/base bash
+  326  docker ps
+  327  docker ps -a
+  328  cd w205
+  329  docker build -t test-spring -f Dockerfile.test .
+  330  sudo docker build -t test-spring -f Dockerfile.test .
+  331  ls
+  332  mkdir redis-standalone
+  333  cd redis-standalone/
+  334  ls
+  335  docker run redis
+  336  ls
+  337  docker run -d redis
+  338  docker ps
+  339  docker run -d --name  redis redis
+  340  docker ps
+  341  clear
+  342  docker run -d --name redis -p 6379:6379 redis
+  343  docker rm --force redis
+  344  docker run -d --name redis -p 6379:6379 redis
+  345  docker ps
+  346  docker rm --force redis
+  347  ls
+  348  docker ps
+  349  cp docker-compose.yml ../course-content-spring2021/05-Storing-Data-II/example-0-docker-compose.yml 
+  350  cp docker-compose.yml ./course-content-spring2021/05-Storing-Data-II/example-0-docker-compose.yml 
+  351  ls
+  352  docker ps
+  353  ls
+  354  cp docker-compose.yml ./course-content-spring2021/05-Storing-Data-II/example-0-docker-compose.yml 
+  355  clear
+  356  cp  ../course-content-spring2021/05-Storing-Data-II/example-0-docker-compose.yml docker-compose.yml
+  357  ls
+  358  cat docker-compose.yml 
+  359  docker compose up -d
+  360  docker-compose up -d
+  361  clear
+  362  ls
+  363  docker-compose up -d
+  364  docker-compose ps
+  365  docker ps
+  366  docker-compose ps
+  367  ls
+  368  apt update
+  369  apt install docker-compose
+  370  sudo apt install docker-compose
+  371  docker-compose up -d
+  372  apt update
+  373  sudo apt update
+  374  sudo apt install docker-compose
+  375  docker-compose up -d
+  376  docker ps
+  377  clear
+  378  docker-compose logs redis
+  379  docker-compose down
+  380  cd ..
+  381  mkdir redis-cluster
+  382  cd redis-cluster/
+  383  clear
+  384  ls
+  385  cp  ../course-content-spring2021/05-Storing-Data-II/example-4-docker-compose.yml docker-compose.yml
+  386  ls
+  387  docker-compose up -d
+  388  docker-compose ps
+  389  docker-compose exec mids bash
+  390  docket-compose logs mids
+  391  docker-compose log mids
+  392  docker-compose logs mids
+  393  docker-compose down
+  394  docker-compose logs redis
+  395  cd w205
+  396  ls
+  397  mkdir kafka
+  398  cd kafka
+  399  cp ../course-content-spring2021/06-Transforming-Data/docker-compose.yml docker-compose.yml
+  400  docker ps
+  401  docker-compose ps
+  402  docker-compose up
+  403  docker ps
+  404  cd w205
+  405  cd kafka
+  406  ls
+  407  docker-compose ps
+  408  docker-compose logs mids
+  409  docker-compose logs kafka
+  410  docker-compose logs zookeeper
+  411  clear
+  412  docker-compose logs zookeeper | grep -i binding
+  413  docker-compose logs kafka | grep -i started
+  414  docker-compose exec kafka   kafka-topics     --create     --topic foo     --partitions 1     --replication-factor 1     --if-not-exists     --zookeeper zookeeper:32181
+  415  clear
+  416  docker-compose exec kafka   kafka-topics     --describe     --topic foo     --zookeeper zookeeper:32181
+  417  docker-compose exec kafka   bash -c "seq 42 | kafka-console-producer \
+  418      --request-required-acks 1 \
+  419      --broker-list localhost:29092 \
+  420      --topic foo && echo 'Produced 42 messages.'"
+  421  docker-compose exec kafka   kafka-console-consumer     --bootstrap-server localhost:29092     --topic foo     --from-beginning     --max-messages 42
+  422  docker-compose down
+  423  docker-compose up -d
+  424  docker-compose ps
+  425  clear
+  426  curl -L -o github-example-large.json https://goo.gl/Y4MD58
+  427  docker-compose exec kafka     kafka-topics       --create       --topic foo       --partitions 1       --replication-factor 1       --if-not-exists       --zookeeper zookeeper:32181
+  428  docker-compose exec mids bash -c "cat /w205/kafka/github-example-large.json"
+  429  docker-compose exec mids bash -c "cat /w205/kafka/github-example-large.json | jq '.[]' -c | kafkacat -P -b kafka:29092 -t foo && echo 'Produced 100 messages.'"
+  430  docker-compose exec kafka   kafka-console-consumer     --bootstrap-server kafka:29092     --topic foo     --from-beginning     --max-messages 42
+  431  docker-compose exec mids bash -c "kafkacat -C -b kafka:29092 -t foo -o beginning -e"
+  432  docker-compose exec mids bash -c "kafkacat -C -b kafka:29092 -t foo -o beginning -e" | wc -l
+  433  docker-compose down
+  434  mkdir spark-with-kafka
+  435  cd w205
+  436  mkdir spark-with-kafka
+  437  ls
+  438  cd spark-with-kafka/
+  439  ls
+  440  cp ../course-content/07-Sourcing-Data/docker-compose.yml
+  441  cp ./course-content/07-Sourcing-Data/docker-compose.yml
+  442  ls
+  443  cp ../course-content-spring2021/07-Sourcing-Data/docker-compose.yml docker-compose.yml
+  444  ls
+  445  docker-compose up -d
+  446  clear
+  447  docker-compose exec kafka   kafka-topics     --create     --topic foo     --partitions 1     --replication-factor 1     --if-not-exists     --zookeeper zookeeper:32181
+  448  docker-compose exec kafka   kafka-topics   --describe   --topic foo   --zookeeper zookeeper:32181
+  449  ls
+  450  docker-compose exec kafka   bash -c "seq 42 | kafka-console-producer \
+  451      --request-required-acks 1 \
+  452      --broker-list kafka:29092 \
+  453      --topic foo && echo 'Produced 42 messages.'"
+  454  clear
+  455  docker-compose exec spark pyspark
+  456  clear
+  457  docker-compose exec spark env PYSPARK_DRIVER_PYTHON=jupyter PYSPARK_DRIVER_PYTHON_OPTS='notebook --no-browser --port 8888 --ip 0.0.0.0 --allow-root --notebook-dir=/w205/' pyspark
+  458  clear
+  459  docker-compose exec spark pyspark
+  460  docker-compose down
+  461  cd w205
+  462  mkdir spark-with-kafka-and-hdfs
+  463  cp ~/w205/course-content//08-Querying-Data/docker-compose.yml docker-compose.yml
+  464  cd spark-with-kafka-and-hdfs/
+  465  cp ~/w205/course-content-spring2021/08-Querying-Data/docker-compose.yml docker-compose.yml
+  466  ls
+  467  docker-compose up
+  468  docker-compose down
+  469  docker ps
+  470  docker-compose up
+  471  docker-compose ps
+  472  docker ps
+  473  docker-compose down
+  474  docker-compose up
+  475  docker-compose down
+  476  ls
+  477  cd w205
+  478  cd spark-with-kafka-and-hdfs/
+  479  ls
+  480  cd w205
+  481  cd spark-with-kafka-and-hdfs/
+  482  ls
+  483  docker-compose exec spark env PYSPARK_DRIVER_PYTHON=jupyter PYSPARK_DRIVER_PYTHON_OPTS='notebook --no-browser --port 8888 --ip 0.0.0.0 --allow-root --notebook-dir=/w205/' pyspark
+  484  cd w205/flask-with-kafka/
+  485  docker-compose exec mids curl http://localhost:5000/purchase_a_sword
+  486  docker-compose exec mids curl http://localhost:5000/
+  487  ocker-compose exec mids curl http://localhost:5000/
+  488  docker-compose exec mids curl http://localhost:5000/
+  489  docker-compose exec mids curl http://localhost:5000/purchase_a_sword
+  490  clear
+  491  docker-compose exec mids bash -c "kafkacat -C -b kafka:29092 -t events -o beginning -e"
+  492  docker compose down
+  493  docker-compose down
+  494  docker-compose ps
+  495  cd w205
+  496  mkdir flask-with-kafka
+  497  cd flask-with-kafka/
+  498  cp ~/w205/course-content-spring2021/09-Ingesting-Data/docker-compose.yml docker-compose.yml 
+  499  docker ps
+  500  docker-compose up
+  501  docker-compose up -d
+  502  docker-compose ps
+  503  docker ps
+  504  clear
+  505  docker-compose exec mids env FLASK_APP=/w205/flask-with-kafka/basic_game_api.py flask run
+  506  docker-compose exec mids env FLASK_APP=/w205/flask-with-kafka/game_api.py flask run
+  507  docker-compose ps
+  508  cd w205
+  509  cd project-2-jkumariucb/
+  510  curl -L -o assessment-attempts-20180128-121051-nested.json https://goo.gl/ME6hjp
+  511  docker-compose up -d
+  512  docker-compose logs -f kafka
+  513  docker-compose exec cloudera hadoop fs -ls /tmp/
+  514  docker-compose exec kafka   kafka-topics     --create   --topic assessment   --partitions 1   --replication-factor 1   --if-not-exists   --zookeeper zookeeper:32181
+  515  docker-compose exec kafka   kafka-topics     --describe     --topic assessment     --zookeeper zookeeper:32181
+  516  docker-compose exec mids bash -c "cat /w205/project-2-jkumariucb/assessment-attempts-20180128-121051-nested.json"
+  517  docker-compose exec mids bash -c "cat /w205/project-2-jkumariucb/assessment-attempts-20180128-121051-nested.json | jq '.'"
+  518  docker-compose exec mids bash -c "cat /w205/project-2-jkumariucb/assessment-attempts-20180128-121051-nested.json | jq '.[]' -c"
+  519  docker-compose exec mids   bash -c "cat /w205/project-2-jkumariucb/assessment-attempts-20180128-121051-nested.json \
+    | jq '.[]' -c \
+    | kafkacat -P -b kafka:29092 -t assessments && echo 'Produced 3280 messages.'"
+  520  docker-compose exec mids   bash -c "cat /w205/project-2-jkumariucb/assessment-attempts-20180128-121051-nested.json \
+    | jq '.[]' -c \
+    | kafkacat -P -b kafka:29092 -t assessment && echo 'Produced 3280 messages.'"
+  521  docker-compose exec spark pyspark
+  522  cat /root/.python_history > spark_history_jkumari.txt
+  523  sudo cat /root/.python_history > spark_history_jkumari.txt
+  524  ls 
+  525  docker-compose exec spark cat /root/.python_history > spark_history_jkumari.txt
+  526  docker-compose exec spark cat /root/.python_history
+  527  history > jkumari-history.txt
